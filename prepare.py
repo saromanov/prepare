@@ -51,6 +51,7 @@ class Prepare:
             data = self.data.drop(drop_fields, axis=1)
 
         data.set_axis(1, [item.lower() for item in data.keys()])
+        data.sort_index()
         return Prepare(data=data)
 
     def preprocess(self, replace_na='mean', replace_na_string=' '):
