@@ -1,4 +1,5 @@
 import pandas as pd
+import random
 import os
 import json
 import logging
@@ -58,13 +59,19 @@ class Prepare:
                 mean - replace by mean values of other fields
                 random - replace by random value
                 em - replace with expectation-maximization algorithm(planned)
-                remove - remove all lines if one(or more) columns contains NaN/NA
+                remove - remove all lines if one(or more) columns contains NaN/NA (planned)
                 none - doing nothing
 
         '''
         data = self._data.sort_index()
-        print(data["first"].fillna(data["first"].mean()))
-        print(data["first"].notnull())
+        for name in data.keys():
+            if data[name].dtype != 'float':
+                continue
+
+            if replace_na == 'mean':
+                data[name] = data[name].fillna(data[name].mean())
+            if replace_na == 'random':
+                data[name] = data[name].fillna(random.random())
         return Prepare(data=data)
 
     def cleanFields(self, except_fields=[]):
