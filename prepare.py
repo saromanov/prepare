@@ -53,8 +53,8 @@ class Prepare:
         data.set_axis(1, [item.lower() for item in data.keys()])
         return Prepare(data=data)
 
-    def preprocess(self, replace_na='mean'):
-        ''' replace_empty - if column contains missing values, replace this fields by some rule.
+    def preprocess(self, replace_na='mean', replace_na_string=' '):
+        ''' replace_na - if column contains missing values, replace this fields by some rule.
               Supported:
                 mean - replace by mean values of other fields
                 random - replace by random value
@@ -62,16 +62,21 @@ class Prepare:
                 remove - remove all lines if one(or more) columns contains NaN/NA (planned)
                 none - doing nothing
 
+            replace_na_string - replacing values in missing string items
+
         '''
         data = self._data.sort_index()
         for name in data.keys():
-            if data[name].dtype != 'float':
-                continue
+            if data[name].dtype == 'float':
+                if replace_na == 'mean':
+                    data[name] = data[name].fillna(data[name].mean())
+                if replace_na == 'random':
+                    data[name] = data[name].fillna(random.random())
+            if data[name].dtype == 'object':
+                if replace_na_string == '':
+                    continue
+                data[name] = data[name].fillna(replace_na_string)
 
-            if replace_na == 'mean':
-                data[name] = data[name].fillna(data[name].mean())
-            if replace_na == 'random':
-                data[name] = data[name].fillna(random.random())
         return Prepare(data=data)
 
     def cleanFields(self, except_fields=[]):
