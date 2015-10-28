@@ -6,30 +6,22 @@ import logging
 
 class Prepare:
     def __init__(self, data=None):
-        self.column_events = {}
         self._data = data
 
-    def addColumnEvent(self, name, event):
-        ''' This event provides modification of column after loaded
-            name - column name
-            event - which gets line and output new representation
-        '''
-        self.column_events[name] = event
-
-    def _applyColumnEvent(self, name):
+    def applyColumnEvent(self, name, func):
         ''' After loading of data, apply modification of some column
             name - name of the column
         '''
         if self._data is None:
             logging.warning("Data is not loaded")
             return
-        if name not in self._data:
+        if name in self._data.keys():
             logging.warning("Column {0} is not in data".format(name))
             return
-        if name not in self.column_events:
-            logging.warning("Column {0} is not in registered column events".format(name))
-        item = self._data[name].map(self.column_events[name])
+        print(self._data.get('nice'))
+        item = self._data[name].map(func)
         self._data[name] = item
+        return Prepare(data=self._data)
 
 
     def read(self, path, fields=[], replace_strings=True, drop_fields=[]):
@@ -66,7 +58,7 @@ class Prepare:
             replace_na_string - replacing values in missing string items
 
         '''
-        data = self._data.sort_index()
+        data = self._data
         for name in data.keys():
             if data[name].dtype == 'float':
                 if replace_na == 'mean':
