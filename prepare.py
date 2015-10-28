@@ -15,10 +15,10 @@ class Prepare:
         if self._data is None:
             logging.warning("Data is not loaded")
             return
-        if name in self._data.keys():
+        if self._data.get(name) is None:
             logging.warning("Column {0} is not in data".format(name))
             return
-        print(self._data.get('nice'))
+        print(self._data['addition'])
         item = self._data[name].map(func)
         self._data[name] = item
         return Prepare(data=self._data)
@@ -42,7 +42,7 @@ class Prepare:
         if len(drop_fields) > 0:
             data = self.data.drop(drop_fields, axis=1)
 
-        data.set_axis(1, [item.lower() for item in data.keys()])
+        data.set_axis(1, [item.lower().replace(' ','') for item in data.keys()])
         data = data.sort_index(axis=1)
         return Prepare(data=data)
 
