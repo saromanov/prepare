@@ -22,6 +22,18 @@ class Prepare:
         self._data[name] = item
         return Prepare(data=self._data)
 
+    def addRowEvent(self, name, func, col=None):
+        ''' Apply event to the row. If col is None, apply event to all columns
+        '''
+        if col is not None:
+            self._data.set_value(name, col, func(self._data.get_value(name, col=col)))
+            return Prepare(data=self._data)
+
+        for col in self._data.keys():
+            self._data.set_value(name, col, func(self._data.get_value(name, col=col)))
+
+        return Prepare(data=self._data)
+
 
     def read(self, path, fields=[], replace_strings=True, drop_fields=[]):
         ''' path to data
