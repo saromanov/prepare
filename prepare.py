@@ -18,7 +18,6 @@ class Prepare:
         if self._data.get(name) is None:
             logging.warning("Column {0} is not in data".format(name))
             return
-        print(self._data['addition'])
         item = self._data[name].map(func)
         self._data[name] = item
         return Prepare(data=self._data)
