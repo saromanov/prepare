@@ -8,18 +8,25 @@ class Prepare:
     def __init__(self, data=None):
         self._data = data
 
+    def _checkCol(self, name):
+        ''' Return True is column name is exist in data frame else False in otherwise
+        '''
+        if self._data is None:
+            logging.warning("Data is not loaded")
+            return False
+        if self._data.get(name) is None:
+            logging.warning("Column {0} is not in data".format(name))
+            return False
+
+        return True
+
     def applyColumnEvent(self, name, func):
         ''' After loading of data, apply modification of some column
             name - name of the column
         '''
-        if self._data is None:
-            logging.warning("Data is not loaded")
-            return
-        if self._data.get(name) is None:
-            logging.warning("Column {0} is not in data".format(name))
-            return
-        item = self._data[name].map(func)
-        self._data[name] = item
+        if self._checkCol(name) is True:
+            item = self._data[name].map(func)
+            self._data[name] = item
         return Prepare(data=self._data)
 
     def addRowEvent(self, index, func, col=None):
@@ -38,6 +45,9 @@ class Prepare:
         for col in self._data.keys():
             self._data.set_value(index, col, func(self._data.get_value(index, col=col)))
 
+        return Prepare(data=self._data)
+
+    def strToNum(self, colname, values):
         return Prepare(data=self._data)
 
 
