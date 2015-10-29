@@ -48,6 +48,12 @@ class Prepare:
         return Prepare(data=self._data)
 
     def strToNum(self, colname, values):
+        ''' colname - column name
+            values - must be in the dict in the format {oldvalue: newvalue}
+        '''
+        if self._checkCol(colname) is True:
+            print(colname, values)
+            self._data = self._data.replace({colname:values})
         return Prepare(data=self._data)
 
 
