@@ -3,6 +3,7 @@ import random
 import os
 import json
 import logging
+import re
 
 class Prepare:
     def __init__(self, data=None):
@@ -106,9 +107,15 @@ class Prepare:
         return Prepare(data=data)
 
     def cleanFields(self, except_fields=[]):
-        ''' Cleaning string data from fields from commas, dots, and so on
+        ''' Cleaning string data from columns from commas, dots, and so on
         '''
-        return Prepare(data=self.data)
+        func = lambda x: re.sub(r'[^\w]', ' ', x).replace(' ','')
+        for col in self._data.keys():
+            if self._data[col].dtype !='object':
+                continue
+            item = self._data[col].map(func)
+            self._data[col] = item
+        return Prepare(data=self._data)
 
 
     def toMatrix(self):
