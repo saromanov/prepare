@@ -99,6 +99,10 @@ class Prepare:
                     data[name] = data[name].fillna(data[name].mean())
                 if replace_na == 'random':
                     data[name] = data[name].fillna(random.random())
+                if replace_na == 'predict':
+                    values = data[name][data[name].notnull()].as_matrix()
+                    topred = data[name][data[name].isnull()].as_matrix()
+
             if data[name].dtype == 'object':
                 if replace_na_string == '':
                     continue
