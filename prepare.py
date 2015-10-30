@@ -54,10 +54,23 @@ class Prepare:
             values - must be in the dict in the format {oldvalue: newvalue}
         '''
         if self._checkCol(colname) is True:
-            print(colname, values)
             self._data = self._data.replace({colname:values})
         return Prepare(data=self._data)
 
+    def strToNumAll(self, except_cols=[]):
+        '''
+           Replace all string values to numeric from all columns
+        '''
+
+        for col in self._data.keys():
+            if self._data[col].dtype != 'object' or col in except_cols:
+                continue
+            values = np.unique(self._data[col])
+            nums = range(1, len(values)+1)
+            self._data = self._data.replace({first: second for(first, second) in zip(values, nums)})
+            #self.strToNum(col, {first: second for(first, second) in zip(values, nums)})
+
+        return Prepare(data=self._data)
 
     def read(self, path, fields=[], replace_strings=True, drop_fields=[]):
         ''' path to data
