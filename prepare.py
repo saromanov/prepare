@@ -102,6 +102,8 @@ class Prepare:
                 if replace_na == 'predict':
                     values = data[name][data[name].notnull()].as_matrix()
                     topred = data[name][data[name].isnull()].as_matrix()
+                if replace_na == 'freq':
+                    data[name] = data[name].fillna(data[name].value_counts().idxmax())
 
             if data[name].dtype == 'object':
                 if replace_na_string == '':
