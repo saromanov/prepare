@@ -86,6 +86,7 @@ class Prepare:
                 mean - replace by mean values of other fields
                 random - replace by random value
                 em - replace with expectation-maximization algorithm(planned)
+                freq - Replace missing values by max frequent values
                 remove - remove all lines if one(or more) columns contains NaN/NA (planned)
                 none - doing nothing
 
