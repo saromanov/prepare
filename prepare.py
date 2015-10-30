@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import random
 import os
 import json
@@ -112,6 +113,16 @@ class Prepare:
                 data[name] = data[name].fillna(replace_na_string)
 
         return Prepare(data=data)
+
+    def sample(self, n):
+        ''' Sample n values from data frame
+        '''
+        values = self._data.index.values
+        if n >= len(values):
+            logging.error("Number of samples must be less then number of values")
+            return
+
+        return Prepare(data=self._data.ix[sorted(np.random.choice(values, n, replace=False))])
 
     def cleanFields(self, except_fields=[]):
         ''' Cleaning string data from columns from commas, dots, and so on
