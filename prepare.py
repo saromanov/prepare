@@ -5,6 +5,7 @@ import os
 import json
 import logging
 import re
+from sklearn import preprocessing
 
 class Prepare:
     def __init__(self, data=None):
@@ -141,6 +142,11 @@ class Prepare:
                 df[key] = (df[key] - df[key].mean())/(df[key].max() - df[key].min())
         return df
 
+    def _norm2(self, df, name):
+        value = df[name].as_matrix()
+        normalized = preprocessing.normalize(value, norm='l2')
+        df[name] = pd.DataFrame(normalized)
+        return df
 
     def sample(self, n):
         ''' Sample n values from data frame
