@@ -160,7 +160,7 @@ class Prepare:
         return self._data
 
     def onlyMaximum(self):
-        ''' Return only columns with maxumum amount of data
+        ''' Return only columns with maximum amount of data
         '''
         print(self._data.sort_index(axis=1))
 
