@@ -94,7 +94,7 @@ class Prepare:
         data = data.sort_index(axis=1)
         return Prepare(data=data)
 
-    def preprocess(self, replace_na='mean', replace_na_string=' '):
+    def preprocess(self, replace_na='mean', replace_na_string=' ', scale=True, norm=True):
         ''' replace_na - if column contains missing values, replace this fields by some rule.
               Supported:
                 mean - replace by mean values of other fields
@@ -105,6 +105,8 @@ class Prepare:
                 none - doing nothing
 
             replace_na_string - replacing values in missing string items
+            scale - scaling datasets
+            norm - normalization datasets
 
         '''
         data = self._data
@@ -125,7 +127,17 @@ class Prepare:
                     continue
                 data[name] = data[name].fillna(replace_na_string)
 
+        if norm: data = self._norm(data)
         return Prepare(data=data)
+
+    def _norm(self, df):
+        ''' Data normalization
+        '''
+        for key in df.keys():
+            if df[key].dtype == 'float':
+                df[key] = (df[key] - df[key].mean())/(df[key].max() - df[key].min())
+        return df
+
 
     def sample(self, n):
         ''' Sample n values from data frame
