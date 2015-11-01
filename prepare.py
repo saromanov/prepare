@@ -65,7 +65,10 @@ class Prepare:
         for col in self._data.keys():
             if self._data[col].dtype != 'object' or col in except_cols:
                 continue
-            values = np.unique(self._data[col])
+            try:
+                values = np.unique(self._data[col])
+            except:
+                raise Exception("Values in the column must be in the same type")
             nums = range(1, len(values)+1)
             self._data = self._data.replace({first: second for(first, second) in zip(values, nums)})
             #self.strToNum(col, {first: second for(first, second) in zip(values, nums)})
