@@ -115,7 +115,7 @@ class Prepare:
         '''
         data = self._data
         for name in data.keys():
-            if data[name].dtype == 'float':
+            if data[name].dtype == 'float64' or data[name].dtype == 'int64':
                 if replace_na == 'mean':
                     data[name] = data[name].fillna(data[name].mean())
                 if replace_na == 'random':
@@ -123,8 +123,10 @@ class Prepare:
                 if replace_na == 'predict':
                     values = data[name][data[name].notnull()].as_matrix()
                     topred = data[name][data[name].isnull()].as_matrix()
-                if replace_na == 'freq':
-                    data[name] = data[name].fillna(data[name].value_counts().idxmax())
+            if replace_na == 'freq':
+                data[name] = data[name].fillna(data[name].value_counts().idxmax())
+                maxvalue = data[name].value_counts()
+                data[name] = data[name].map(lambda x: maxvalue if x == '' else x)
 
             if data[name].dtype == 'object':
                 if replace_na_string == '':
