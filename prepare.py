@@ -152,6 +152,12 @@ class Prepare:
         df[name] = pd.DataFrame(normalized)
         return df
 
+    def _scale(self, df, name):
+        value = df[name].as_matrix()
+        scale = preprocessing.scale(value)
+        df[name] = scale
+        return df[name]
+
     def sample(self, n):
         ''' Sample n values from data frame
         '''
