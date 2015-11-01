@@ -143,6 +143,8 @@ class Prepare:
         return df
 
     def _norm2(self, df, name):
+        ''' Data normalization. Second case
+        '''
         value = df[name].as_matrix()
         normalized = preprocessing.normalize(value, norm='l2')
         df[name] = pd.DataFrame(normalized)
