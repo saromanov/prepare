@@ -74,7 +74,6 @@ class Prepare:
                 raise Exception("Values in the column must be in the same type")
             nums = range(1, len(values)+1)
             self._data = self._data.replace({first: second for(first, second) in zip(values, nums)})
-            #self.strToNum(col, {first: second for(first, second) in zip(values, nums)})
 
         return Prepare(data=self._data)
 
@@ -87,7 +86,6 @@ class Prepare:
         if os.path.abspath(path).find('.csv') != -1:
             data = pd.read_csv(path)
             self.data = data
-            #print(data.take([0,2]))
         elif os.path.abspath(path).find('.json') != -1:
             data = pd.DataFrame(json.loads(open(path, 'r').read()))
         else:
