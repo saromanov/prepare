@@ -32,6 +32,15 @@ class Prepare:
             self._data[name] = item
         return Prepare(data=self._data)
 
+    def addColumn(self, title, data):
+        ''' addColumn to existing dataset
+            Args:
+                title - name of the column
+                data - must be in the same length
+        '''
+        self._data[title] = pd.Series(data, index=self._data.index)
+        return Prepare(data=self._data)
+
     def addRowEvent(self, index, func, col=None):
         ''' Apply event to the row. If col is None, apply event to all columns
             index - row index
