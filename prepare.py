@@ -107,6 +107,14 @@ class Prepare:
         data = data.sort_index(axis=1)
         return Prepare(data=data)
 
+    def removeDuplicates(self):
+        ''' Removing duplicate rows from dataset
+        '''
+        idxs = self._data.index[self._data.duplicated()]
+        if len(idxs) > 0:
+            self._data = self._data.drop(idxs)
+        return Prepare(data=self._data)
+
     def preprocess(self, replace_na='mean', replace_na_string=' ', scale=True, norm=True):
         ''' replace_na - if column contains missing values, replace this fields by some rule.
               Supported:
