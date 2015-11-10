@@ -20,3 +20,9 @@ import prepare
 item = prepare.Prepare()
 print(item.read('example1.csv').preprocess(replace_na='mean', replace_string_na=' ').toDF())
 ```
+
+
+### API
+
+```applyColumnEvent``` - Set event to coulmn
+```applyRowEvent``` - Set event to row
