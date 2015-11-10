@@ -51,7 +51,9 @@ class Prepare:
         return Prepare(data=self._data)
 
     def strToNum(self, colname, values):
-        ''' colname - column name
+        '''
+            Replace string values to numeric
+            colname - column name
             values - must be in the dict in the format {oldvalue: newvalue}
         '''
         if self._checkCol(colname) is True:
