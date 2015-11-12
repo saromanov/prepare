@@ -24,5 +24,12 @@ print(item.read('example1.csv').preprocess(replace_na='mean', replace_string_na=
 
 ### API
 
-```applyColumnEvent``` - Set event to coulmn
+#### applyColumnEvent
+Set event to coulmn
+
+```python
+item.read('example1.csv').applyColumnEvent('column_name', lambda x: 'A').toDF()
+```
+
+
 ```applyRowEvent``` - Set event to row
