@@ -91,23 +91,21 @@ class Prepare:
             fields - expected fields for dataset
             replace_strings - replace strings to numeric values
         '''
-        data = None
         if os.path.abspath(path).find('.csv') != -1:
-            data = pd.read_csv(path)
-            self.data = data
+            self._data = pd.read_csv(path)
         elif os.path.abspath(path).find('.xlsx') != -1:
             self._data = pd.read_excel(path)
         elif os.path.abspath(path).find('.json') != -1:
-            data = pd.DataFrame(json.loads(open(path, 'r').read()))
+            self._data = pd.DataFrame(json.loads(open(path, 'r').read()))
         else:
             raise Exception("Format of file {0} is not supported yet".format(path))
 
         if len(drop_fields) > 0:
-            data = self.data.drop(drop_fields, axis=1)
+            self._data = self._data.drop(drop_fields, axis=1)
 
-        data.set_axis(1, [item.lower().replace(' ','') for item in data.keys()])
-        data = data.sort_index(axis=1)
-        return Prepare(data=data)
+        self._data.set_axis(1, [item.lower().replace(' ','') for item in self._data.keys()])
+        self._data = self._data.sort_index(axis=1)
+        return Prepare(data=self._data)
 
     def removeDuplicates(self):
         ''' Removing duplicate rows from dataset
