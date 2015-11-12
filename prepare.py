@@ -95,6 +95,8 @@ class Prepare:
         if os.path.abspath(path).find('.csv') != -1:
             data = pd.read_csv(path)
             self.data = data
+        elif os.path.abspath(path).find('.xlsx') != -1:
+            self._data = pd.read_excel(path)
         elif os.path.abspath(path).find('.json') != -1:
             data = pd.DataFrame(json.loads(open(path, 'r').read()))
         else:
