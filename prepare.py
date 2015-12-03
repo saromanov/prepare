@@ -107,6 +107,11 @@ class Prepare:
         self._data = self._data.sort_index(axis=1)
         return Prepare(data=self._data)
 
+    def add_data(self, data):
+        ''' Instead call 'read', set already loaded data
+        '''
+        return Prepare(data=self._data)
+
     def removeDuplicates(self):
         ''' Removing duplicate rows from dataset
         '''
