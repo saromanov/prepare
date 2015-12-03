@@ -1,4 +1,4 @@
-# prepare
+# prepare [![Build Status](https://travis-ci.org/saromanov/prepare.svg)](https://travis-ci.org/saromanov/prepare)
 
 Easy preparation of data set for data analysis or machine learning tasks!
 
@@ -31,5 +31,10 @@ Set event to coulmn
 item.read('example1.csv').applyColumnEvent('column_name', lambda x: 'A').toDF()
 ```
 
+### applyRowEvent
+Set event to row
 
-```applyRowEvent``` - Set event to row
+```python
+item.read('example1.csv').applyRowEvent('row_name', lambda x: 'A').toDF()
+'''
+
