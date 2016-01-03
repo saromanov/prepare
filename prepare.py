@@ -210,13 +210,23 @@ class Prepare:
             self._data[col] = item
         return Prepare(data=self._data)
 
-    def mergeFromFile(self, path):
+    def mergeColumn(self, data=None, path=None):
         '''
            Merging columns from file
            Args:
                path - path to file
+               data - column for merging
         '''
-        pass
+
+        if data is None and path is None:
+            raise Exception("Data for merging is not found")
+        if data is not None:
+            self._data = pd.concat([self._data, data], axis=1)
+        if path is not None:
+            coldata = self._readInner(path)
+            self._data = pd.concat([self._data, coldata], axis=1)
+
+        return Prepare(data=self._data)
 
 
 
