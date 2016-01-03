@@ -91,21 +91,30 @@ class Prepare:
             fields - expected fields for dataset
             replace_strings - replace strings to numeric values
         '''
+        self._data = self._readInner(path, fields=fields, replace_strings=replace_strings, drop_fields=drop_fields)
+        return Prepare(data=self._data)
+
+    def _readInner(self, path, fields=[], replace_strings=True, drop_fields=[]):
+        result = None
         if os.path.abspath(path).find('.csv') != -1:
-            self._data = pd.read_csv(path)
+            result = pd.read_csv(path)
         elif os.path.abspath(path).find('.xlsx') != -1:
-            self._data = pd.read_excel(path)
+            result = pd.read_excel(path)
         elif os.path.abspath(path).find('.json') != -1:
-            self._data = pd.DataFrame(json.loads(open(path, 'r').read()))
+            result = pd.DataFrame(json.loads(open(path, 'r').read()))
         else:
             raise Exception("Format of file {0} is not supported yet".format(path))
 
-        if len(drop_fields) > 0:
-            self._data = self._data.drop(drop_fields, axis=1)
+        if result is None:
+            raise Exception("Something went wrong with reading of data")
 
-        self._data.set_axis(1, [item.lower().replace(' ','') for item in self._data.keys()])
-        self._data = self._data.sort_index(axis=1)
-        return Prepare(data=self._data)
+        if len(drop_fields) > 0:
+            result = self._data.drop(drop_fields, axis=1)
+
+        result.set_axis(1, [item.lower().replace(' ','') for item in result.keys()])
+        result = result.sort_index(axis=1)
+        return result
+
 
     def add_data(self, data):
         ''' Instead call 'read', set already loaded data
@@ -200,6 +209,15 @@ class Prepare:
             item = self._data[col].map(func)
             self._data[col] = item
         return Prepare(data=self._data)
+
+    def mergeFromFile(self, path):
+        '''
+           Merging columns from file
+           Args:
+               path - path to file
+        '''
+        pass
+
 
 
     def toMatrix(self):
