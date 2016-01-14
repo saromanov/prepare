@@ -170,9 +170,7 @@ class Prepare:
     def _norm(self, df):
         ''' Data normalization
         '''
-        for key in df.keys():
-            if df[key].dtype == 'float':
-                df[key] = (df[key] - df[key].mean())/(df[key].max() - df[key].min())
+        df = [(df[key] - df[key].mean())/(df[key].max() - df[key].min()) for key in df.keys() if df[key].dtype == 'float']
         return df
 
     def _norm2(self, df, name):
